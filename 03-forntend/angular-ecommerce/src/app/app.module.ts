@@ -4,7 +4,7 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './component/product-list/product-list.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, provideHttpClient, withFetch} from '@angular/common/http';
 import {ProductService} from './services/product.service';
 
 @NgModule({
@@ -15,10 +15,11 @@ import {ProductService} from './services/product.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+   //  HttpClientModule    no longer need in Angular 18, instead add provideHttpClient() in providers
   ],
   providers: [
     provideClientHydration(),
+    provideHttpClient(withFetch()),
     ProductService
   ],
   bootstrap: [AppComponent]
