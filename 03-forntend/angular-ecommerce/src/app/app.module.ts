@@ -11,14 +11,15 @@ import { ProductService } from './services/product.service';
 
 // Define Router
 // When path matches, create new instance of the component
-const routes: Routes = [
-  {path: 'category/:id', component: ProductListComponent },
-  {path: 'category', component: ProductListComponent },
-  { path: 'products', component: ProductListComponent },
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
-  { path: '**', redirectTo: '/products', pathMatch: 'full' }, // Genirc will match on anything that did't match above routes
 
+const routes: Routes = [
+  {path: 'category/:id', component: ProductListComponent},
+  {path: 'category', component: ProductListComponent},
+  {path: 'products', component: ProductListComponent},
+  {path: '', redirectTo: '/products', pathMatch: 'full'},
+  {path: '**', redirectTo: '/products', pathMatch: 'full'}// Genirc will match on anything that did't match above routes
 ];
+
 @NgModule({
   declarations: [
     AppComponent,

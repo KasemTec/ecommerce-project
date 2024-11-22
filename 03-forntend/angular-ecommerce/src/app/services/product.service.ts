@@ -17,8 +17,11 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   // This method will map the JSON data from Spring Data REST to Product array, will return an observable
-  getProductList(): Observable<Product[]> {
-    return this.httpClient.get<GetResponse>(this.apiUrl).pipe(
+  getProductList(theCategoryId: number): Observable<Product[]> {
+
+    // build URL based on category id
+    const searchURL = `${this.apiUrl}/search/findByCategoryId?id=${theCategoryId}`
+    return this.httpClient.get<GetResponse>(searchURL).pipe(
       map(response => response._embedded.products)
     );
   }
