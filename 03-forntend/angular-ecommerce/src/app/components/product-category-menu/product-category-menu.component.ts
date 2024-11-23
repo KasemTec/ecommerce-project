@@ -4,27 +4,27 @@ import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-category-menu',
-  standalone: true,
-  imports: [],
+  //standalone: true,
+  //imports: [],
   templateUrl: './product-category-menu.component.html',
   styleUrl: './product-category-menu.component.css'
 })
 export class ProductCategoryMenuComponent implements OnInit {
   // Define  property
-  productCategory: ProductCategory[] = [];
+  productCategories: ProductCategory[] = [];
 
   constructor(private productService: ProductService) {}
 
 
   ngOnInit(): void {
-    this.listProductCategory();
+    this.listProductCategories();
     throw new Error('Method not implemented.');
   }
-  listProductCategory() {
+  listProductCategories() {
     this.productService.getProductCategories().subscribe(
       data => {
         console.log('Product Category=' + JSON.stringify(data));
-        this.productCategory = data; // assign data to property
+        this.productCategories = data; // assign data to property
       }
     );
   }

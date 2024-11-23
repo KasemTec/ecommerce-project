@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 import { ProductService } from './services/product.service';
+import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 
 
 
@@ -13,7 +14,7 @@ import { ProductService } from './services/product.service';
 // When path matches, create new instance of the component
 
 const routes: Routes = [
-  {path: 'category/:id', component: ProductListComponent},
+  {path: 'category/:id/:name', component: ProductListComponent},
   {path: 'category', component: ProductListComponent},
   {path: 'products', component: ProductListComponent},
   {path: '', redirectTo: '/products', pathMatch: 'full'},
@@ -23,15 +24,16 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductCategoryMenuComponent
   ],
   imports: [
     // Configure Routes
     RouterModule.forRoot(routes),
     BrowserModule,
     AppRoutingModule,
-    //  HttpClientModule    no longer need in Angular 18, instead add provideHttpClient() in providers
-  ],
+
+],
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
