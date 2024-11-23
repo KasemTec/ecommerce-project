@@ -26,12 +26,13 @@
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "^0.15.0"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.7",
     "@angular-devkit/core": "^18.2.7",
     "@angular-devkit/schematics": "^18.2.7",
+    "@angular-eslint/schematics": "^18.4.1",
     "@angular/cli": "^18.2.7",
     "@angular/compiler-cli": "^18.2.0",
     "@nx/angular": "20.0.12",
