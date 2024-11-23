@@ -312,6 +312,17 @@ input.au-input.au-input-xl{
 
 /*
  * ----------------------------
+ * Info Message No Product
+ * ----------------------------
+ */
+.info-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/*
+ * ----------------------------
  * Left Menu Bar
  * ----------------------------
  */

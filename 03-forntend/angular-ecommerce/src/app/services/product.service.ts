@@ -25,9 +25,7 @@ export class ProductService {
 
     // build URL based on category id
     const searchURL = `${this.apiUrl}/search/findByCategoryId?id=${theCategoryId}`
-    return this.httpClient.get<GetResponseProducts>(searchURL).pipe(
-      map(response => response._embedded.products)
-    );
+     return this.getProducts(searchURL);
   }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
@@ -42,6 +40,18 @@ export class ProductService {
     return throwError(() => new Error(errorMessage));
   }
 
+  searchProducts(theKeyword: string): Observable<Product[]>{
+        // build URL based on keyword
+    const searchURL = `${this.apiUrl}/search/findByNameContaining?name=${theKeyword}`
+    return this.getProducts(searchURL);
+
+  }
+
+  private getProducts(searchURL: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchURL).pipe(
+      map(response => response._embedded.products)
+    );
+  }
 
   getProductCategories(): Observable<ProductCategory[]>{
     // Call REST API
