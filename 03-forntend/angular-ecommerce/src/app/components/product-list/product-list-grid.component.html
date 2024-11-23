@@ -1,7 +1,8 @@
 <div class="main-content">
   <div class="section-content section-content-p30">
 
-    <h4>Category: {{ currentCategoryName }}</h4>
+
+    <h4> {{ currentCategoryName }}</h4>
     <hr>
 
     <div class="container-fluid">
@@ -18,6 +19,12 @@
           </div>
 
         </div>
+
+        <!-- If No  Product disply message -->
+         <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+          No Products Found.
+        </div>
+
       </div>
     </div>
   </div>

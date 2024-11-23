@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
@@ -8,10 +8,12 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './product-list-grid.component.html',
   styleUrl: './product-list.component.css'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit{
   products: Product[] = [];
   currentCategoryId: number = 1;
   currentCategoryName: string = "";
+  searchMode: boolean = false;
+  infoMessage: string = "";
 
   // inject the Product Service
   constructor(private productService: ProductService,
@@ -25,7 +27,30 @@ export class ProductListComponent {
 
 
   private listProducts() {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
+    if (this.searchMode) {
+      this.handelSearchProducts();
+    } else {
+      const keyword = this.route.snapshot.paramMap.get('keyword') || 'unknown';
+      this.infoMessage = `There is no product with keyword: ${keyword}`;
+      this.handelListProducts();
+    }
+  }
+
+
+  handelSearchProducts() {
+    const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
+
+    // now search for the products using this keyword
+    this.productService.searchProducts(theKeyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
+  }
+
+  handelListProducts() {
     // Check if the "id" parameter is available
     // use the ActivatedRoute and Map of all the route parameters, and read the id
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
@@ -49,5 +74,6 @@ export class ProductListComponent {
         this.products = data; // Assign results to the Product array
       }
     )
+
   }
 }
