@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductListComponent {
   products: Product[] = [];
   currentCategoryId: number = 1;
+  currentCategoryName: string = "";
+
   // inject the Product Service
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}  // inject the activatedRoute
@@ -30,10 +32,14 @@ export class ProductListComponent {
     if (hasCategoryId) {
       //get the "id" param string. Convert string to a numer using the "+"symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
+
+         // get the "name" param string
+          this.currentCategoryName = this.route.snapshot.paramMap.get('name')!;
     }
     else {
       // not category id available, get the defualt id = 1
       this.currentCategoryId = 1;
+      this.currentCategoryName = 'Books';
     }
 
 
