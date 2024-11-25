@@ -29,6 +29,18 @@ export class ProductService {
     return this.httpClient.get<Product>(productUrl);
   }
 
+  getProductListPagination(thePage: number,
+                          thePageSize: number,
+                          theCategoryId: number): Observable<GetResponseProducts> {
+
+    // build URL based on category id, page and size
+    const searchURL = `${this.apiUrl}/search/findByCategoryId?id=${theCategoryId}`
+      + `&page=${thePage}&size=${thePageSize}`;
+    return this.httpClient.get<GetResponseProducts>(searchURL);
+  }
+
+
+
   // This method will map the JSON data from Spring Data REST to Product array, will return an observable
   getProductList(theCategoryId: number): Observable<Product[]> {
 
@@ -75,6 +87,13 @@ export class ProductService {
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  },
+  // Define new property for pagination
+  page: {
+    size: number,
+    totalElements: number,
+    totalpages: number,
+    number: number
   }
 }
 

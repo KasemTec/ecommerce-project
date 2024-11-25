@@ -1,0 +1,4 @@
+# For the Pagination. Install: 
+ 
+ng add @angular/localize
+npm install @ng-bootstrap/ng-bootstrap@17.0.1
