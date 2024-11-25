@@ -13,12 +13,21 @@ import { ProductCategory } from '../common/product-category';
 export class ProductService {
 
 
+
   private apiUrl = 'http://localhost:8080/api/products'; // Url for Spring Boot RestAPI
 
   private categoryURL = 'http://localhost:8080/api/product-category';
 
   // Inject HttpClient
   constructor(private httpClient: HttpClient) { }
+
+
+  getProduct(theProductId: number): Observable<Product> {
+    // build URL based on product id
+    const productUrl = `${this.apiUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productUrl);
+  }
 
   // This method will map the JSON data from Spring Data REST to Product array, will return an observable
   getProductList(theCategoryId: number): Observable<Product[]> {
