@@ -8,12 +8,25 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './product-list-grid.component.html',
   styleUrl: './product-list.component.css'
 })
+
+
+
 export class ProductListComponent implements OnInit{
+
+
+
   products: Product[] = [];
   currentCategoryId: number = 1;
+  previousCategoryId: number = 1;
   currentCategoryName: string = "";
   searchMode: boolean = false;
   infoMessage: string = "";
+
+  // Properties for Pagination
+
+  thePageNumber: number = 1;
+  thePageSize: number = 10;
+  theTotalElements: number = 0;
 
   // inject the Product Service
   constructor(private productService: ProductService,
@@ -26,7 +39,7 @@ export class ProductListComponent implements OnInit{
   }
 
 
-  private listProducts() {
+   listProducts() {
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
@@ -67,13 +80,39 @@ export class ProductListComponent implements OnInit{
       this.currentCategoryName = 'Books';
     }
 
+    //
+    //Check if we have a different category than previous
+    //
+    //
+
+    // if have different category than previous, than set thePageNumber back to 1
+    if (this.previousCategoryId != this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+
+    console.log(`currentCategoryId = ${this.currentCategoryId}, thePageNumber = ${this.thePageNumber}`);
+
 
     // Get the products for teh given category id
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data; // Assign results to the Product array
-      }
-    )
+    // this.productService.getProductList(this.currentCategoryId).subscribe(
+    //   data => {
+    //     this.products = data; // Assign results to the Product array
+    //   }
+    // )
 
-  }
+    // Fetch the product list using the ProductService with pagination and category filters
+    this.productService.getProductListPagination( this.thePageNumber - 1, // Backend pagination is zero-based
+                                                  this.thePageSize,
+                                                  this.currentCategoryId)
+                                                  .subscribe(
+                                                    data => {  // Update component state with the fetched data
+                                                      this.products = data._embedded.products;
+                                                      this.thePageNumber = data.page.number + 1; // Adjust for zero-based pagination
+                                                      this.thePageSize = data.page.size;
+                                                      this.theTotalElements = data.page.totalElements;
+                                                    }
+                                                );
+    }
 }
