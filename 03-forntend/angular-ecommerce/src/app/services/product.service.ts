@@ -68,6 +68,21 @@ export class ProductService {
 
   }
 
+  // Pagination Keyword Search
+
+   searchProductPagination(thePage: number,
+                          thePageSize: number,
+                          theKeyword: string): Observable<GetResponseProducts> {
+
+    // build URL based on keyword page and size
+    const searchURL = `${this.apiUrl}/search/findByNameContaining?name=${theKeyword}`
+      + `&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchURL);
+   }
+
+
+
   private getProducts(searchURL: string): Observable<Product[]> {
     return this.httpClient.get<GetResponseProducts>(searchURL).pipe(
       map(response => response._embedded.products)

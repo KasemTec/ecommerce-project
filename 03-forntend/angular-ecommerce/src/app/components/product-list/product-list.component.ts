@@ -1,6 +1,6 @@
+import { Product } from './../../common/product';
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from '../../services/product.service';
-import {Product} from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -25,8 +25,10 @@ export class ProductListComponent implements OnInit{
   // Properties for Pagination
 
   thePageNumber: number = 1;
-  thePageSize: number = 10;
+  thePageSize: number = 5;
   theTotalElements: number = 0;
+
+  previousKeyword: string = "";
 
   // inject the Product Service
   constructor(private productService: ProductService,
@@ -55,12 +57,19 @@ export class ProductListComponent implements OnInit{
   handelSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
+    // if different keyword than prevoius, then set thePageNumer to 1
+    if (this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword;
+
+    console.log(`Keyword = ${theKeyword}, The Page Number: ${this.thePageNumber}`);
+
     // now search for the products using this keyword
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.productService.searchProductPagination(this.thePageNumber - 1,
+                                                this.thePageSize,
+                                                theKeyword).subscribe(this.processResult());
   }
 
   handelListProducts() {
@@ -107,12 +116,25 @@ export class ProductListComponent implements OnInit{
                                                   this.thePageSize,
                                                   this.currentCategoryId)
                                                   .subscribe(
-                                                    data => {  // Update component state with the fetched data
-                                                      this.products = data._embedded.products;
-                                                      this.thePageNumber = data.page.number + 1; // Adjust for zero-based pagination
-                                                      this.thePageSize = data.page.size;
-                                                      this.theTotalElements = data.page.totalElements;
-                                                    }
-                                                );
+                                                   this.processResult());
+  }
+
+
+  updatePageSize(pageSize: Event) {
+    this.thePageSize = +(pageSize.target as HTMLSelectElement).value;
+    this.thePageNumber = 1;
+    this.listProducts();
+    console.log(`thePageNumber: ${this.thePageNumber} Page Size: ${this.thePageSize}`)
+
+  }
+
+  processResult() {
+    return (data: any) => {
+      this.products = data._embedded.products;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
     }
+  }
+
 }
