@@ -1,5 +1,5 @@
 <p align="left">
-  <img src="/src/assets/images/myLogo.png" alt="MyLogo" width="100" height="70">
+  <img src="03-forntend/angular-ecommerce/src/assets/images/myLogo.png" alt="MyLogo" width="100" height="70">
 </p>
 
 # E-Commerce Codamine
